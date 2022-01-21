@@ -49,13 +49,13 @@ export class Renderer {
     glue.registerProgram('fractal', fragmentShader);
   }
 
-  render() {
+  render(offset: number[]) {
     this.glueCanvas.setSize(window.innerWidth, window.innerHeight);
     const glue = this.glueCanvas.glue;
     glue.program('fractal')?.apply({
-      iIterations: 512,
+      iIterations: 64,
       iZoom: 1.0,
-      iOffset: [0.0, 0.0],
+      iOffset: offset,
       iColor1: '#ff0000',
       iColor2: '#000000',
     });

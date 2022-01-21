@@ -7117,6 +7117,11 @@ react-scripts@5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
+react-use-pointer-drag@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-use-pointer-drag/-/react-use-pointer-drag-0.0.2.tgz#fa08857504a7d0f611b721b321e1ef781829f4ff"
+  integrity sha512-nP1//PH7jU1yEbRLIPQWgVFwEtx1jqYj2FPN9r0XqTuEqCZ3rMRgU+tKWNEHfD2QM1OwY0GZWV7gOJW06gVugA==
+
 react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
