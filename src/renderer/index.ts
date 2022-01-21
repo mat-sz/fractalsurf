@@ -3,7 +3,7 @@ import { GlueCanvas } from 'fxglue';
 const fragmentShader = `precision highp float;
 
 uniform float iIterations;
-uniform float iZoom;
+uniform float iScale;
 uniform vec2 iOffset;
 uniform vec4 iColor1;
 uniform vec4 iColor2;
@@ -32,7 +32,7 @@ void main() {
     for(float sy = 0.0; sy < supersample; sy++) {
       vec2 sc = gl_FragCoord.xy + vec2(sx, sy) / supersample;
       vec2 p = (-iResolution.xy + 2.0 * sc) / iResolution.x;
-      float r = mandelbrot(vec2(-0.75, 0.0) - iOffset + p * iZoom);
+      float r = mandelbrot(vec2(-0.75, 0.0) - iOffset + p / iScale);
       color += div * mix(iColor1, iColor2, cos(r * 0.1));
     }
   }
@@ -49,13 +49,13 @@ export class Renderer {
     glue.registerProgram('fractal', fragmentShader);
   }
 
-  render(offset: number[]) {
+  render(offset: number[], scale: number) {
     this.glueCanvas.setSize(window.innerWidth, window.innerHeight);
     const glue = this.glueCanvas.glue;
     glue.program('fractal')?.apply({
       iIterations: 64,
-      iZoom: 1.0,
-      iOffset: offset,
+      iScale: scale,
+      iOffset: [offset[0] * -1, offset[1]],
       iColor1: '#ff0000',
       iColor2: '#000000',
     });

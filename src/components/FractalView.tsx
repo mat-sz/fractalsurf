@@ -7,19 +7,20 @@ const renderer = new Renderer();
 export const FractalView: React.FC = () => {
   const requestRef = useRef<any>();
   const divRef = useRef<HTMLDivElement>(null);
+  const scaleRef = useRef(2);
   const offsetRef = useRef([0, 0]);
   const { startDragging } = usePointerDrag<{
     init: number[];
     offset: number[];
   }>((x, y, { init, offset }) => {
     offsetRef.current = [
-      offset[0] - ((init[0] - x) * 2) / window.innerWidth,
-      offset[1] + ((init[1] - y) * 2) / window.innerWidth,
+      offset[0] + ((init[0] - x) * 2) / window.innerWidth / scaleRef.current,
+      offset[1] + ((init[1] - y) * 2) / window.innerWidth / scaleRef.current,
     ];
   });
 
   const animate = useCallback(() => {
-    renderer.render(offsetRef.current);
+    renderer.render(offsetRef.current, scaleRef.current);
     requestRef.current = requestAnimationFrame(animate);
   }, []);
 
@@ -53,6 +54,18 @@ export const FractalView: React.FC = () => {
           init: [touch.clientX, touch.clientY],
           offset: offsetRef.current,
         });
+      }}
+      onWheel={(e: React.WheelEvent) => {
+        console.log(e.deltaY);
+
+        let change = 0;
+        if (e.deltaY > 0) {
+          change -= 0.1;
+        } else {
+          change += 0.1;
+        }
+
+        scaleRef.current += change;
       }}
       className="fractal"
     ></div>
