@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { usePointerDrag } from 'react-use-pointer-drag';
 import { Renderer } from '../renderer';
 
+const renderer = new Renderer();
+
 export const FractalView: React.FC = () => {
-  const rendererRef = useRef<Renderer>(new Renderer());
   const requestRef = useRef<any>();
   const divRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef([0, 0]);
@@ -12,13 +13,13 @@ export const FractalView: React.FC = () => {
     offset: number[];
   }>((x, y, { init, offset }) => {
     offsetRef.current = [
-      offset[0] - (init[0] - x) / window.innerWidth,
-      offset[1] + (init[1] - y) / window.innerHeight,
+      offset[0] - ((init[0] - x) * 2) / window.innerWidth,
+      offset[1] + ((init[1] - y) * 2) / window.innerWidth,
     ];
   });
 
-  const animate = useCallback(time => {
-    rendererRef.current.render(offsetRef.current);
+  const animate = useCallback(() => {
+    renderer.render(offsetRef.current);
     requestRef.current = requestAnimationFrame(animate);
   }, []);
 
@@ -28,7 +29,7 @@ export const FractalView: React.FC = () => {
   }, [animate]);
 
   useEffect(() => {
-    divRef.current?.append(rendererRef.current.glueCanvas.canvas);
+    divRef.current?.append(renderer.glueCanvas.canvas);
   }, []);
 
   return (
