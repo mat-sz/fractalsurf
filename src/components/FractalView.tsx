@@ -7,7 +7,7 @@ const renderer = new Renderer();
 export const FractalView: React.FC = () => {
   const requestRef = useRef<any>();
   const divRef = useRef<HTMLDivElement>(null);
-  const scaleRef = useRef(2);
+  const scaleRef = useRef(1);
   const offsetRef = useRef([0, 0]);
   const { startDragging } = usePointerDrag<{
     init: number[];
@@ -56,8 +56,6 @@ export const FractalView: React.FC = () => {
         });
       }}
       onWheel={(e: React.WheelEvent) => {
-        console.log(e.deltaY);
-
         let change = 0;
         if (e.deltaY > 0) {
           change -= 0.1;
