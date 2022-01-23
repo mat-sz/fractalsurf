@@ -63,6 +63,14 @@ export const FractalView: React.FC = () => {
           change += 0.1;
         }
 
+        const newScale = scaleRef.current + change;
+        const cx = ((e.clientX * 2) / window.innerWidth - 1) / scaleRef.current;
+        const cy =
+          ((e.clientY * 2) / window.innerWidth -
+            window.innerHeight / window.innerWidth) /
+          scaleRef.current;
+        offsetRef.current[0] += (cx * change) / newScale;
+        offsetRef.current[1] += (cy * change) / newScale;
         scaleRef.current += change;
       }}
       className="fractal"
