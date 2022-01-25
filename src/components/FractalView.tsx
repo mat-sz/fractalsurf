@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { usePointerDrag } from 'react-use-pointer-drag';
-import { VarColor, VarUI } from 'react-var-ui';
+import { VarColor, VarSlider, VarUI } from 'react-var-ui';
 import { Renderer, Settings } from '../renderer';
 
 const renderer = new Renderer();
@@ -10,6 +10,7 @@ export const FractalView: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
     iColor1: '#ff0000',
     iColor2: '#000000',
+    iIterations: 64,
   });
   const settingsRef = useRef<Settings>(settings);
   const requestRef = useRef<any>();
@@ -102,6 +103,14 @@ export const FractalView: React.FC = () => {
         >
           <VarColor path="iColor1" label="Color (background)" />
           <VarColor path="iColor2" label="Color (foreground)" />
+          <VarSlider
+            path="iIterations"
+            label="Iterations"
+            min={1}
+            max={2048}
+            defaultValue={64}
+            step={1}
+          />
         </VarUI>
       </div>
     </>

@@ -9,7 +9,7 @@ uniform vec4 iColor1;
 uniform vec4 iColor2;
 
 float mandelbrot(in vec2 c) {
-  const float maxIter = 512.0;
+  const float maxIter = 2048.0;
   float iter = 0.0;
   vec2 z = vec2(0.0);
   for(float i = 0.0; i < maxIter; i++) {
@@ -42,6 +42,7 @@ void main() {
 }`;
 
 export interface Settings {
+  iIterations: number;
   iColor1: string;
   iColor2: string;
 }
@@ -58,7 +59,6 @@ export class Renderer {
     this.glueCanvas.setSize(window.innerWidth, window.innerHeight);
     const glue = this.glueCanvas.glue;
     glue.program('fractal')?.apply({
-      iIterations: 64,
       iScale: scale,
       iOffset: [offset[0] * -1, offset[1]],
       ...settings,
