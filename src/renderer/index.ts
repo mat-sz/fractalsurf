@@ -41,6 +41,11 @@ void main() {
   gl_FragColor.a = 1.0;
 }`;
 
+export interface Settings {
+  iColor1: string;
+  iColor2: string;
+}
+
 export class Renderer {
   glueCanvas = new GlueCanvas({ antialias: true });
 
@@ -49,15 +54,14 @@ export class Renderer {
     glue.registerProgram('fractal', fragmentShader);
   }
 
-  render(offset: number[], scale: number) {
+  render(offset: number[], scale: number, settings: Settings) {
     this.glueCanvas.setSize(window.innerWidth, window.innerHeight);
     const glue = this.glueCanvas.glue;
     glue.program('fractal')?.apply({
       iIterations: 64,
       iScale: scale,
       iOffset: [offset[0] * -1, offset[1]],
-      iColor1: '#ff0000',
-      iColor2: '#000000',
+      ...settings,
     });
     glue.render();
   }
