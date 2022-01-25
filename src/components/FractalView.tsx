@@ -3,6 +3,7 @@ import { usePointerDrag } from 'react-use-pointer-drag';
 import { Renderer } from '../renderer';
 
 const renderer = new Renderer();
+const scaleExp = 0.05;
 
 export const FractalView: React.FC = () => {
   const requestRef = useRef<any>();
@@ -58,9 +59,16 @@ export const FractalView: React.FC = () => {
       onWheel={(e: React.WheelEvent) => {
         let change = 0;
         if (e.deltaY > 0) {
-          change -= 0.1;
+          change = (scaleRef.current * scaleExp) / -(scaleExp + 1);
         } else {
-          change += 0.1;
+          change = scaleRef.current * scaleExp;
+        }
+
+        if (
+          scaleRef.current + change <= 0.1 ||
+          scaleRef.current + change >= 3000
+        ) {
+          return;
         }
 
         const newScale = scaleRef.current + change;
