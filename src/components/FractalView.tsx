@@ -96,6 +96,7 @@ export const FractalView: React.FC = () => {
         }}
         className="fractal"
       ></div>
+      <div className="logo">fractal.surf</div>
       <div className="settings">
         <VarUI
           values={settings}
