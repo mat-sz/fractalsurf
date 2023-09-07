@@ -17,14 +17,15 @@ export const FractalView: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const scaleRef = useRef(1);
   const offsetRef = useRef([0, 0]);
-  const { startDragging } = usePointerDrag<{
-    init: number[];
+  const { dragProps } = usePointerDrag<{
     offset: number[];
-  }>((x, y, { init, offset }) => {
-    offsetRef.current = [
-      offset[0] + ((init[0] - x) * 2) / window.innerWidth / scaleRef.current,
-      offset[1] + ((init[1] - y) * 2) / window.innerWidth / scaleRef.current,
-    ];
+  }>({
+    onMove: ({ deltaX, deltaY, state: { offset } }) => {
+      offsetRef.current = [
+        offset[0] - (deltaX * 2) / window.innerWidth / scaleRef.current,
+        offset[1] - (deltaY * 2) / window.innerWidth / scaleRef.current,
+      ];
+    },
   });
 
   const animate = useCallback(() => {
@@ -49,25 +50,7 @@ export const FractalView: React.FC = () => {
     <>
       <div
         ref={divRef}
-        onMouseDown={(e: React.MouseEvent) => {
-          e.preventDefault();
-          startDragging({
-            init: [e.clientX, e.clientY],
-            offset: offsetRef.current,
-          });
-        }}
-        onTouchStart={(e: React.TouchEvent) => {
-          e.preventDefault();
-          const touch = e.touches[0];
-          if (!touch) {
-            return;
-          }
-
-          startDragging({
-            init: [touch.clientX, touch.clientY],
-            offset: offsetRef.current,
-          });
-        }}
+        {...dragProps({ offset: offsetRef.current })}
         onWheel={(e: React.WheelEvent) => {
           let change = 0;
           if (e.deltaY > 0) {
